@@ -5,9 +5,9 @@ import App from './App'
 import Vue from 'vue'
 import router from './router'
 
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-import navbar from 'vue-strap/src/Navbar'
+//import 'bootstrap/dist/css/bootstrap.css'
+//import 'bootstrap-vue/dist/bootstrap-vue.css'
+//import navbar from 'vue-strap/src/Navbar'
 //import dropdown from 'vue-strap/src/Dropdown'
 
 import HelloWorld from '@/components/HelloWorld';

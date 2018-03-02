@@ -13,10 +13,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "bootstrap-vue": "^2.0.0-rc.1",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1",
-    "vue-strap": "^1.1.40"
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
