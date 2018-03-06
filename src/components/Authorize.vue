@@ -1,7 +1,7 @@
 <template>
   <section>
     <h2>Авторизация</h2>
-    <form class="col-md-6" v-on:submit.prevent="logIn"> 
+    <form class="col-md-6" v-if="seen" v-on:submit.prevent="logIn"> 
         <br>
         <label>Логин &nbsp;&nbsp;&nbsp;&nbsp;  </label>
         <input type="text" v-model="login" placeholder="Введите логин"/><br>
@@ -17,7 +17,8 @@
 
 <script>
 
-import { bus } from '../main.js'
+//import { bus } from '../main.js'
+import { store } from '../main.js'
 
   /**
    * Любой компонент можно использовать несколько раз в виде тега https://ru.vuejs.org/v2/guide/components.html
@@ -31,8 +32,15 @@ export default {
   data () {
     return {
       login: '',
-      password: ''
+      password: '',
+      seen: true
     }
+  },
+  /**
+   * Чтение Cookie
+   */
+  created: function() {
+    this.seen = !this.aliveCookie()
   },
   methods: {
     logIn: function() {
@@ -41,7 +49,16 @@ export default {
       this.$router.push({ name: 'User', params: { id:123 }}); 
     },
     logOut: function() {
-      bus.$emit('id-selected', 1);
+      store.dispatch({
+        type: 'incrementAsync',
+        amount: 10
+      });
+      store.dispatch('incrementAsync').then(() => {
+        console.log('прошло две секунды');
+      });
+    },
+    aliveCookie: function() {
+      return false;
     }
   }
 }

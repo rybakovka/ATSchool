@@ -3,6 +3,7 @@
 
 import App from './App'
 import Vue from 'vue'
+import Vuex from 'vuex'
 import router from './router'
 
 //import 'bootstrap/dist/css/bootstrap.css'
@@ -15,10 +16,41 @@ import Authorize from '@/components/Authorize';
 import User from '@/components/User';
 import NotFound from '@/components/NotFound';
 
-export var bus = new Vue();
+Vue.use(Vuex);
+
+export const store = new Vuex.Store({
+    strict: true,
+    state: {
+        count: 0
+    },
+    //Чтобы инициировать обработку мутации, необходимо вызвать store.commit, уточнив
+    mutations: {
+        increment (state) {
+        state.count++
+        }
+    },
+    //Действия запускаются методом store.dispatch:
+    actions: {
+        incrementAsync ({ commit }) {
+            setTimeout(() => {
+                commit('increment');
+                console.log('increment');
+            }, 2000)
+        }
+    }
+});
+
+/*
+export var bus = new Vue({
+
+});
+
+
 bus.$on('id-selected', function(id) {
     console.log('11');
 });
+
+*/
 
 Vue.config.productionTip = false;
 
