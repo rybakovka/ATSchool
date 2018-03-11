@@ -26,19 +26,28 @@ export const store = new Vuex.Store({
     //Чтобы инициировать обработку мутации, необходимо вызвать store.commit, уточнив
     mutations: {
         increment (state) {
-        state.count++
+            console.log(state.count++);
         }
     },
     //Действия запускаются методом store.dispatch:
     actions: {
-        incrementAsync ({ commit }) {
-            setTimeout(() => {
-                commit('increment');
-                console.log('increment');
-            }, 2000)
+        actionA ({ commit }) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    console.log('начинаем');
+                    commit('increment');
+                    resolve();
+                }, 1000)
+            });
+        },
+        actionB ({ dispatch }) {
+            return dispatch('actionA').then(() => {
+                console.log('выполнено');
+            });
         }
     }
 });
+
 
 /*
 export var bus = new Vue({
