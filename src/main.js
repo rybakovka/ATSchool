@@ -1,10 +1,10 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 
-import App from './App'
-import Vue from 'vue'
-import Vuex from 'vuex'
-import router from './router'
+import App from './App';
+import Vue from 'vue';
+import Vuex from 'vuex';
+import router from './router';
 
 //import 'bootstrap/dist/css/bootstrap.css'
 //import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -15,32 +15,61 @@ import HelloWorld from '@/components/HelloWorld';
 import Authorize from '@/components/Authorize';
 import User from '@/components/User';
 import NotFound from '@/components/NotFound';
+import Axios from 'axios';
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     strict: true,
     state: {
-        count: 0
+        lp: {}
+    },
+    getters: {
+
     },
     //Чтобы инициировать обработку мутации, необходимо вызвать store.commit, уточнив
     mutations: {
-        increment (state) {
-            console.log(state.count++);
+        loginAndPassword(state, lp) {
+            state.lp = JSON.stringify(lp);
+            console.log(state.lp);
+
+            //console.log(JSON.stringify(lp));
+            //state.login = JSON.stringify(lp).login;
+            //state.password = JSON.stringify(lp).password;
+            /* console.log(state.login);
+             console.log(state.password);*/
         }
     },
     //Действия запускаются методом store.dispatch:
     actions: {
-        actionA ({ commit }) {
-            return new Promise((resolve, reject) => {
+        auth({ commit }) {
+
+            console.log(state.lp.login + ' +');
+            console.log(state.lp.password);
+
+            return new Promise((resolve) => {
+
+                Axios.post('http://localhost:8080/auth', { login: state.lp.login, passMD5: state.lp.password })
+                    .then(Response => {
+                        console.log(Response.data);
+                        resolve();
+                    })
+                    .catch(e => {
+                        this.console.error('ошибка');
+                    });
+                console.log('get');
+
+                /*
                 setTimeout(() => {
                     console.log('начинаем');
                     commit('increment');
                     resolve();
-                }, 1000)
+                }, 1000);
+                */
+
             });
         },
-        actionB ({ dispatch }) {
+        actionB({ dispatch }) {
             return dispatch('actionA').then(() => {
                 console.log('выполнено');
             });

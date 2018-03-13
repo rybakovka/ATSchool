@@ -32,7 +32,6 @@ export default {
     return {
       login: '',
       password: ''
-      //availableCoockie: false
     }
   },
   /**
@@ -43,10 +42,9 @@ export default {
   },
   methods: {
     logIn: function() {
-      //var lp = JSON.parse(JSON.stringify(this.$data));
-      //console.log(lp);
-      //store.dispatch('actionA');
-      store.dispatch('actionB');
+      //JSON.stringify(this.$data)
+      store.commit('loginAndPassword', this.$data );
+      store.dispatch('auth');
       this.$router.push({ name: 'User', params: { id:123 }}); 
     },
     logOut: function() {
