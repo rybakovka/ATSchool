@@ -6,7 +6,7 @@
         <label>Логин &nbsp;&nbsp;&nbsp;&nbsp;  </label>
         <input type="text" v-model="login" placeholder="Введите логин"/><br>
         <label>Пароль &nbsp; </label>
-        <input type="password" v-model="password" placeholder="Введите пароль"/><br>
+        <input type="password" v-model="passMD5" placeholder="Введите пароль"/><br>
         <button class="btn btn-primary" type="submit">Вход</button>
     </form>
     <button class="btn btn-primary" v-on:click="logOut">Выход</button>
@@ -31,7 +31,7 @@ export default {
   data () {
     return {
       login: '',
-      password: ''
+      passMD5: ''
     }
   },
   /**

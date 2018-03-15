@@ -29,9 +29,9 @@ export const store = new Vuex.Store({
     },
     //Чтобы инициировать обработку мутации, необходимо вызвать store.commit, уточнив
     mutations: {
-        loginAndPassword(state, lp) {
+        loginAndPassword(state, lp, lpToDb) {
             state.lp = JSON.stringify(lp);
-            console.log(state.lp);
+            console.log('mutation: ' + state.lp);
 
             //console.log(JSON.stringify(lp));
             //state.login = JSON.stringify(lp).login;
@@ -42,22 +42,22 @@ export const store = new Vuex.Store({
     },
     //Действия запускаются методом store.dispatch:
     actions: {
-        auth({ commit }) {
+        auth({ commit, state }) {
 
-            console.log(state.lp.login + ' +');
-            console.log(state.lp.password);
+            console.log('password: ' + state.lp);
+            //console.log(state.lp.login + ' +');
+            //console.log(state.lp.password);
 
             return new Promise((resolve) => {
 
-                Axios.post('http://localhost:8080/auth', { login: state.lp.login, passMD5: state.lp.password })
+                Axios.post('http://localhost:8080/auth', state.lp)
                     .then(Response => {
                         console.log(Response.data);
                         resolve();
                     })
                     .catch(e => {
-                        this.console.error('ошибка');
+                        //this.console.error('ошибка');
                     });
-                console.log('get');
 
                 /*
                 setTimeout(() => {
