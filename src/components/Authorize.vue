@@ -6,7 +6,7 @@
         <label>Логин &nbsp;&nbsp;&nbsp;&nbsp;  </label>
         <input type="text" v-model="login" placeholder="Введите логин"/><br>
         <label>Пароль &nbsp; </label>
-        <input type="password" v-model="passMD5" placeholder="Введите пароль"/><br>
+        <input type="password" v-model="password" placeholder="Введите пароль"/><br>
         <button class="btn btn-primary" type="submit">Вход</button>
     </form>
     <button class="btn btn-primary" v-on:click="logOut">Выход</button>
@@ -31,28 +31,19 @@ export default {
   data () {
     return {
       login: '',
-      passMD5: ''
+      password: ''
     }
-  },
-  /**
-   * Чтение Cookie
-   */
-  created: function() {
-    //availableCoockie = false;
   },
   methods: {
     logIn: function() {
       //JSON.stringify(this.$data)
       store.commit('loginAndPassword', this.$data );
-      store.dispatch('auth');
-      this.$router.push({ name: 'User', params: { id:123 }}); 
+      store.dispatch('logIn');
+      console.log(store.getters.userAuthorized);
+      //this.$router.push({ name: 'User', params: { id:123 }}); 
     },
     logOut: function() {
-
-
-    },
-    aliveCookie: function() {
-      return false;
+      console.log('logOut');
     }
     
   }

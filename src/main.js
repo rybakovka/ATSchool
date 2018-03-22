@@ -5,6 +5,7 @@ import App from './App';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import router from './router';
+import VueCookie from 'vue-cookie';
 
 //import 'bootstrap/dist/css/bootstrap.css'
 //import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -18,81 +19,69 @@ import NotFound from '@/components/NotFound';
 import Axios from 'axios';
 
 Vue.use(Vuex);
+Vue.use(VueCookie);
 
 export const store = new Vuex.Store({
     strict: true,
     state: {
-        lp: {}
+        login: '',
+        password: '',
+        authorized: false,
+        session: ''
     },
     getters: {
-
+        userAuthorized: state => {
+            return state.authorized;
+        }
     },
     //Чтобы инициировать обработку мутации, необходимо вызвать store.commit, уточнив
     mutations: {
-        loginAndPassword(state, lp, lpToDb) {
-            state.lp = JSON.stringify(lp);
-            console.log('mutation: ' + state.lp);
-
-            //console.log(JSON.stringify(lp));
-            //state.login = JSON.stringify(lp).login;
-            //state.password = JSON.stringify(lp).password;
-            /* console.log(state.login);
-             console.log(state.password);*/
+        loginAndPassword(state, lp) {
+            state.login = lp.login;
+            state.password = lp.password;
+        },
+        successfulAuthorization(state) {
+            state.authorized = true;
+        },
+        ansuccessfulAuthorization(state) {
+            state.authorized = false;
         }
     },
     //Действия запускаются методом store.dispatch:
     actions: {
-        auth({ commit, state }) {
-
-            console.log('password: ' + state.lp);
-            //console.log(state.lp.login + ' +');
-            //console.log(state.lp.password);
-
-            return new Promise((resolve) => {
-
-                Axios.post('http://localhost:8080/auth', state.lp)
+        authFromRest({ commit }) {
+            return new Promise((resolve, reject) => {
+                Axios.post('http://localhost:8080/auth', { login: this.state.login, passMD5: this.state.password })
                     .then(Response => {
-                        console.log(Response.data);
+                        console.log('Ответ сервера: ' + Response.data);
+                        if (Response.data.code == 201) {
+                            this.$cookie.set('session', Response.data.sessionId, 7);
+                            console.log('сделали куку');
+                        } else {
+                            console.log('код ответа: ' + Response.data.code);
+                        }
                         resolve();
                     })
                     .catch(e => {
-                        //this.console.error('ошибка');
+                        commit('ansuccessfulAuthorization');
                     });
-
-                /*
-                setTimeout(() => {
-                    console.log('начинаем');
-                    commit('increment');
-                    resolve();
-                }, 1000);
-                */
-
             });
         },
-        actionB({ dispatch }) {
-            return dispatch('actionA').then(() => {
+        authFromCookie({ commit }) {
+
+        },
+        logIn({ dispatch, commit }) {
+            return dispatch('authFromRest').then(() => {
+                commit('successfulAuthorization');
+                //this.$router.push({ name: 'User', params: { id: 123 } });
                 console.log('выполнено');
             });
-        }
+        },
     }
 });
 
-
-/*
-export var bus = new Vue({
-
-});
-
-
-bus.$on('id-selected', function(id) {
-    console.log('11');
-});
-
-*/
-
 Vue.config.productionTip = false;
 
-/* eslint-disable no-new */
 new Vue({
     el: '#app',
     router,
