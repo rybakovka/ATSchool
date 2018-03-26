@@ -36,6 +36,7 @@ export default {
   },
   methods: {
     logIn: function() {
+      this.$cookie.set('1','1',1);
       //JSON.stringify(this.$data)
       store.commit('loginAndPassword', this.$data );
       store.dispatch('logIn');

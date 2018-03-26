@@ -5,7 +5,6 @@ import App from './App';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import router from './router';
-import VueCookie from 'vue-cookie';
 
 //import 'bootstrap/dist/css/bootstrap.css'
 //import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -17,6 +16,7 @@ import Authorize from '@/components/Authorize';
 import User from '@/components/User';
 import NotFound from '@/components/NotFound';
 import Axios from 'axios';
+import VueCookie from 'vue-cookie';
 
 Vue.use(Vuex);
 Vue.use(VueCookie);
@@ -49,14 +49,26 @@ export const store = new Vuex.Store({
     },
     //Действия запускаются методом store.dispatch:
     actions: {
+
+
         authFromRest({ commit }) {
-            return new Promise((resolve, reject) => {
+
+            var session = Vue.cookie.get('session');
+            console.log(session);
+            if(session) {
+                Axios.get('http://localhost:8080/user/session/{session}').
+                    then(Response => { 
+                        console.log(Response.data);
+                    });
+            } else {
+                return new Promise((resolve, reject) => {
                 Axios.post('http://localhost:8080/auth', { login: this.state.login, passMD5: this.state.password })
                     .then(Response => {
-                        console.log('Ответ сервера: ' + Response.data);
-                        if (Response.data.code == 201) {
-                            this.$cookie.set('session', Response.data.sessionId, 7);
-                            console.log('сделали куку');
+                        console.log(Response.data);
+                        if (Response.data.code === 201) {
+                            Vue.cookie.set('session', Response.data.sessionID, 1);
+                            console.log('сделали куку' + Response.data.sessionID);
+                            router.push({ name: 'User', params: { id:123 }}); 
                         } else {
                             console.log('код ответа: ' + Response.data.code);
                         }
@@ -65,11 +77,16 @@ export const store = new Vuex.Store({
                     .catch(e => {
                         commit('ansuccessfulAuthorization');
                     });
-            });
+                });
+            }
+
+            
         },
+
         authFromCookie({ commit }) {
 
         },
+
         logIn({ dispatch, commit }) {
             return dispatch('authFromRest').then(() => {
                 commit('successfulAuthorization');
@@ -86,5 +103,10 @@ new Vue({
     el: '#app',
     router,
     components: { App },
-    template: '<App/>'
+    template: '<App/>',
+
+    created: function () {
+        this.$cookie.set('2','2',1);
+    }
 });
+
