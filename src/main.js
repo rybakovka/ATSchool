@@ -24,76 +24,94 @@ Vue.use(VueCookie);
 export const store = new Vuex.Store({
     strict: true,
     state: {
-        login: '',
-        password: '',
-        authorized: false,
-        session: ''
-    },
-    getters: {
-        userAuthorized: state => {
-            return state.authorized;
-        }
+        lp: { },
+        userInfo: { }
     },
     //Чтобы инициировать обработку мутации, необходимо вызвать store.commit, уточнив
     mutations: {
         loginAndPassword(state, lp) {
-            state.login = lp.login;
-            state.password = lp.password;
+            state.lp = lp;
         },
-        successfulAuthorization(state) {
-            state.authorized = true;
+        setUserInfo(state, info) {
+            state.userInfo = info;
+            console.log(state.userInfo);
         },
-        ansuccessfulAuthorization(state) {
-            state.authorized = false;
+        clear(state) {
+            state = null;
         }
     },
     //Действия запускаются методом store.dispatch:
     actions: {
+        authByPassword({ commit }) {
+            return new Promise((resolve, reject) => {
+            Axios.post('http://localhost:8080/auth', { login: this.state.lp.login, passMD5: this.state.lp.password })
+                .then(Response => {
+                    console.log(Response.data);
+                    if (Response.data.code === 201) {
+                        Vue.cookie.set('session', Response.data.sessionID, 1);
+                        console.log('сделали куку' + Response.data.sessionID);
+                        router.push({ name: 'User', params: { id:123 }});
+                    } else {
+                        console.log('код ответа: ' + Response.data.code);
+                    }
+                    resolve();
+                })
+                .catch(e => {
 
-
-        authFromRest({ commit }) {
-
-            var session = Vue.cookie.get('session');
-            console.log(session);
-            if(session) {
-                Axios.get('http://localhost:8080/user/session/{session}').
-                    then(Response => { 
-                        console.log(Response.data);
-                    });
-            } else {
-                return new Promise((resolve, reject) => {
-                Axios.post('http://localhost:8080/auth', { login: this.state.login, passMD5: this.state.password })
-                    .then(Response => {
-                        console.log(Response.data);
-                        if (Response.data.code === 201) {
-                            Vue.cookie.set('session', Response.data.sessionID, 1);
-                            console.log('сделали куку' + Response.data.sessionID);
-                            router.push({ name: 'User', params: { id:123 }}); 
-                        } else {
-                            console.log('код ответа: ' + Response.data.code);
-                        }
-                        resolve();
-                    })
-                    .catch(e => {
-                        commit('ansuccessfulAuthorization');
-                    });
                 });
-            }
-
-            
+            });
         },
 
-        authFromCookie({ commit }) {
+        authByCookie({ commit }) {
+            var session = Vue.cookie.get('session');
+            if(session) {
+                console.log('Promise');
+                Axios.get(`http://localhost:8080/user/session/${session}`).
+                then(Response => {
+                    console.log(Response.data);
+                    commit('setUserInfo', Response.data);
+                    router.push({ name: 'User', params: { id:123 }});
 
+                });
+            } else {
+                console.log('нет куки')
+            }
         },
 
         logIn({ dispatch, commit }) {
-            return dispatch('authFromRest').then(() => {
-                commit('successfulAuthorization');
+
+            return dispatch('authByPassword').then(() => {
+
+                var session = Vue.cookie.get('session');
+                if(session) {
+                    Axios.get(`http://localhost:8080/user/session/${session}`).
+                    then(Response => {
+                        console.log(Response.data);
+                        commit('setUserInfo', Response.data);
+                    });
+                } else {
+                    console.log('нет куки')
+                }
+
                 //this.$router.push({ name: 'User', params: { id: 123 } });
-                console.log('выполнено');
+
             });
         },
+
+        logOut({ commit }) {
+
+            var session = Vue.cookie.get('session');
+            if(session) {
+                Axios.delete(`http://localhost:8080/user/session/${session}`).
+                then(Response => {
+                    console.log(Response.data);
+                });
+                Vue.cookie.delete('session');
+            } else {
+                console.log('нет куки')
+            }
+            commit('clear');
+        }
     }
 });
 
@@ -106,7 +124,7 @@ new Vue({
     template: '<App/>',
 
     created: function () {
-        this.$cookie.set('2','2',1);
+        console.log('Created');
     }
 });
 

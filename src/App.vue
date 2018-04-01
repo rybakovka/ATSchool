@@ -11,9 +11,12 @@
 
 <script>
 
-export default {
-  name: 'App'
-}
+
+  import { store } from './main.js'
+
+  export default {
+    name: 'App'
+  }
 </script>
 
 <style>

@@ -9,7 +9,10 @@
         <input type="password" v-model="password" placeholder="Введите пароль"/><br>
         <button class="btn btn-primary" type="submit">Вход</button>
     </form>
-    <button class="btn btn-primary" v-on:click="logOut">Выход</button>
+
+      <button class="btn btn-primary" v-on:click="logOut">Выход</button>
+      <button class="btn btn-primary" v-on:click="authFromCookie">Авторизация по Куки</button>
+
   </section>
 </template> 
 
@@ -36,17 +39,15 @@ export default {
   },
   methods: {
     logIn: function() {
-      this.$cookie.set('1','1',1);
-      //JSON.stringify(this.$data)
       store.commit('loginAndPassword', this.$data );
       store.dispatch('logIn');
-      console.log(store.getters.userAuthorized);
-      //this.$router.push({ name: 'User', params: { id:123 }}); 
     },
     logOut: function() {
-      console.log('logOut');
+      store.dispatch('logOut');
+    },
+    authFromCookie: function () {
+      store.dispatch('authByCookie');
     }
-    
   }
 }
 
