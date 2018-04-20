@@ -28,6 +28,8 @@ export const store = new Vuex.Store({
     getters: {
         gerUserInfo: state => {
             return state.userInfo;
+            console.log('getter');
+            console.log(state.userInfo);
         }
     },
     //Чтобы инициировать обработку мутации, необходимо вызвать store.commit, уточнив
@@ -104,10 +106,10 @@ export const store = new Vuex.Store({
         logOut({ commit }) {
             var session = Vue.cookie.get('session');
             if (session) {
-                Axios.delete(`http://localhost:8080/user/session/${session}`) //.
-                    //then(Response => {
-                    //    console.log(Response.data);
-                    //});
+                Axios.delete(`http://localhost:8080/user/session/${session}`); //.
+                //then(Response => {
+                //    console.log(Response.data);
+                //});
                 Vue.cookie.delete('session');
             } else {
                 console.log('нет куки');

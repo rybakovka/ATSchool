@@ -40,7 +40,7 @@
             <div class="headline">{{ userInfo.Firstname }}</div>
             <div class="headline">{{ userInfo.Lastname }}</div>
             <div class="headline">{{ userInfo.Middlename }}</div>
-            <span class="grey--text">{{State}}</span>
+            <span class="grey--text">{{userInfo.State}}</span>
           </div>
         </v-card-title>
         <v-card-actions>
@@ -112,7 +112,8 @@
       userInfo: {
         Firstname: '!',
         Lastname: '@',
-        Middlename: '#'
+        Middlename: '#',
+        State: 'Student'
       },
       drawer: true,
       drawerRight: true,
@@ -123,10 +124,13 @@
       source: String
     },
     created: function () {
-        userInfo = store.getters.getUserInfo;
-        console.log(userInfo);
+        //this.userInfo = store.getters.getUserInfo;
+        console.log("User1");
+        console.log(store.getters.getUserInfo);
+        console.log("User2");
+        console.log(this.userInfo);
         //store.dispatch('getCource');
-        console.log("User");
+        
     }
   }
 </script>
