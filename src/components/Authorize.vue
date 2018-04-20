@@ -1,4 +1,96 @@
 <template>
+  <form>
+    <v-text-field
+      label="E-mail"
+      v-model="email"
+      :error-messages="emailErrors"
+      @input="$v.email.$touch()"
+      @blur="$v.email.$touch()"
+      required
+    ></v-text-field>
+    <v-text-field
+      label="Password"
+      v-model="password"
+      :error-messages="passwordErrors"
+      :counter="20"
+      @input="$v.password.$touch()"
+      @blur="$v.password.$touch()"
+      required
+    ></v-text-field>
+    <v-checkbox
+      label="Чужой компьютер"
+      v-model="checkbox"
+      required
+    ></v-checkbox>
+    <v-btn @click="submit">submit</v-btn>
+    <v-btn @click="clear">clear</v-btn>
+  </form>
+</template>
+
+<script>
+  import { validationMixin } from 'vuelidate'
+  import { required, maxLength, minLength, email, password } from 'vuelidate/lib/validators'
+
+  export default {
+    mixins: [validationMixin],
+
+    validations: {
+      email: { required, email },
+      password: { required, minLength: minLength(8), maxLength: maxLength(15) }
+    },
+
+    data: () => ({
+      email: '',
+      password: '',
+      select: null,
+      checkbox: false
+    }),
+
+    computed: {
+      checkboxErrors () {
+        const errors = []
+        if (!this.$v.checkbox.$dirty) return errors
+        !this.$v.checkbox.required && errors.push('You must agree to continue!')
+        return errors
+      },
+      passwordErrors () {
+        const errors = []
+        if (!this.$v.password.$dirty) return errors
+        !this.$v.password.maxLength && errors.push('Password must be at max 15 characters long')
+        !this.$v.password.minLength && errors.push('Password must be at min 8 characters long')
+        !this.$v.password.required && errors.push('Password is required.')
+        return errors
+      },
+      emailErrors () {
+        const errors = []
+        if (!this.$v.email.$dirty) return errors
+        !this.$v.email.email && errors.push('Must be valid e-mail')
+        !this.$v.email.required && errors.push('E-mail is required')
+        return errors
+      }
+    },
+
+    methods: {
+      submit () {
+        this.$v.$touch()
+      },
+      clear () {
+        this.$v.$reset()
+        this.email = ''
+        this.password = ''
+        this.checkbox = false
+      }
+    }
+  }
+</script>
+
+
+
+<!--
+
+
+
+<template>
   <section>
     <h2>Авторизация</h2>
     <form class="col-md-6" v-on:submit.prevent="logIn"> 
@@ -22,12 +114,6 @@
 
 import { store } from '../main.js'
 
-  /**
-   * Любой компонент можно использовать несколько раз в виде тега https://ru.vuejs.org/v2/guide/components.html
-   *
-   * Коммуникация между несвязангными компонентами 
-   * https://ru.vuejs.org/v2/guide/components.html#%D0%9A%D0%BE%D0%BC%D0%BC%D1%83%D0%BD%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F-%D0%BC%D0%B5%D0%B6%D0%B4%D1%83-%D0%BA%D0%BE%D0%BC%D0%BF%D0%BE%D0%BD%D0%B5%D0%BD%D1%82%D0%B0%D0%BC%D0%B8-%D0%BD%D0%B5-%D1%81%D0%B2%D1%8F%D0%B7%D0%B0%D0%BD%D0%BD%D1%8B%D0%BC%D0%B8-%D0%B8%D0%B5%D1%80%D0%B0%D1%80%D1%85%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8
-   */
 
 export default {
   name: 'Authorize',
@@ -52,3 +138,8 @@ export default {
 }
 
 </script>
+
+
+
+
+-->
