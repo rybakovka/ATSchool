@@ -31,6 +31,8 @@
   import { validationMixin } from 'vuelidate'
   import { required, maxLength, minLength, email, password } from 'vuelidate/lib/validators'
 
+  import { store } from '../main.js'
+
   export default {
     mixins: [validationMixin],
 
@@ -73,6 +75,10 @@
     methods: {
       submit () {
         this.$v.$touch()
+        console.log(this.$v);
+        console.log(this.$data.password);
+        store.commit('loginAndPassword', this.$data  );
+        store.dispatch('logIn');
       },
       clear () {
         this.$v.$reset()

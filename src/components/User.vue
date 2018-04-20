@@ -7,16 +7,9 @@
       clipped
       app
     >
-      <v-list dense>
-        <v-list-tile @click.stop="right = !right">
-          <v-list-tile-action>
-            <v-icon>exit_to_app</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Open Temporary Drawer</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
+        <!-- --> 
+
+        
     </v-navigation-drawer>
     <v-toolbar
       color="blue-grey"
@@ -35,63 +28,61 @@
       v-model="drawer"
       app
     >
-      <v-list dense>
-        <v-list-tile @click.stop="left = !left">
-          <v-list-tile-action>
-            <v-icon>exit_to_app</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Open Temporary Drawer</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
+
+      <v-card>
+        <v-card-media
+          src="https://vuetifyjs.com/static/doc-images/cards/sunshine.jpg"
+          height="200px"
+        >
+        </v-card-media>
+        <v-card-title primary-title>
+          <div>
+            <div class="headline">{{ userInfo.Firstname }}</div>
+            <div class="headline">{{ userInfo.Lastname }}</div>
+            <div class="headline">{{ userInfo.Middlename }}</div>
+            <span class="grey--text">{{State}}</span>
+          </div>
+        </v-card-title>
+        <v-card-actions>
+          <v-btn flat>Редактировать</v-btn>
+        </v-card-actions>
+      </v-card>
+
+<!-- --> 
+
     </v-navigation-drawer>
     <v-navigation-drawer
       temporary
       v-model="left"
       fixed
     ></v-navigation-drawer>
+
     <v-content>
 
-  <v-expansion-panel expand>
-    <v-expansion-panel-content>
-      <div slot="header">Item</div>
-      <v-card>
-        <v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
-      </v-card>
+      <v-expansion-panel expand>
+        <v-expansion-panel-content>
+          <div slot="header">Item</div>
+          <v-card>
+            <v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
+          </v-card>
 
-      <v-card>
-        <v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
-      </v-card>
+          <v-card>
+            <v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
+          </v-card>
 
-      <v-card>
-        <v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
-      </v-card>
-    </v-expansion-panel-content>
-  </v-expansion-panel>
+          <v-card>
+            <v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
+          </v-card>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
 
 
       <v-container fluid fill-height>
         <v-layout justify-center align-center>
           <v-flex shrink>
-            <v-tooltip right>
-              <v-btn
-                icon
-                large
-                :href="source"
-                target="_blank"
-                slot="activator"
-              >
-                <v-icon large>code</v-icon>
-              </v-btn>
-              <span>Source</span>
-            </v-tooltip>
-            <v-tooltip right>
-              <v-btn icon large href="https://codepen.io/johnjleider/pen/KQrPKJ" target="_blank" slot="activator">
-                <v-icon large>mdi-codepen</v-icon>
-              </v-btn>
-              <span>Codepen</span>
-            </v-tooltip>
+
+
+
           </v-flex>
         </v-layout>
       </v-container>
@@ -101,18 +92,28 @@
       temporary
       v-model="right"
       fixed
-    ></v-navigation-drawer>
+    >
+    
+    </v-navigation-drawer>
     <v-footer color="blue-grey" class="white--text" app>
       <span>Vuetify</span>
       <v-spacer></v-spacer>
-      <span>&copy; 2017</span>
+      <span>&copy; 2008-2018 Перфоманс Лаб</span>
     </v-footer>
   </v-app>
 </template>
 
 <script>
+
+  import { store } from '../main.js'
+
   export default {
     data: () => ({
+      userInfo: {
+        Firstname: '!',
+        Lastname: '@',
+        Middlename: '#'
+      },
       drawer: true,
       drawerRight: true,
       right: null,
@@ -120,6 +121,12 @@
     }),
     props: {
       source: String
+    },
+    created: function () {
+        userInfo = store.getters.getUserInfo;
+        console.log(userInfo);
+        //store.dispatch('getCource');
+        console.log("User");
     }
   }
 </script>

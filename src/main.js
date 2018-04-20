@@ -25,6 +25,11 @@ export const store = new Vuex.Store({
         lp: {},
         userInfo: {}
     },
+    getters: {
+        gerUserInfo: state => {
+            return state.userInfo;
+        }
+    },
     //Чтобы инициировать обработку мутации, необходимо вызвать store.commit, уточнив
     mutations: {
         loginAndPassword(state, lp) {
@@ -42,7 +47,8 @@ export const store = new Vuex.Store({
     actions: {
         authByPassword({ commit }) {
             return new Promise((resolve, reject) => {
-                Axios.post('http://localhost:8080/auth', { login: this.state.lp.login, passMD5: this.state.lp.password })
+                console.log(this.state.lp.email + this.state.lp.password);
+                Axios.post('http://localhost:8080/auth', { login: this.state.lp.email, passMD5: this.state.lp.password })
                     .then(Response => {
                         console.log(Response.data);
                         if (Response.data.code === 201) {

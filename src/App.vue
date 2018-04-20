@@ -1,11 +1,14 @@
 <template>
   <div id="app">
+<!--
     <img src="./assets/logo.png">
     <ul>
       <li><router-link to="/" exact>Home</router-link></li>
       <li><router-link to="/authorize">Authorize</router-link></li>
     </ul>
+    -->
     <router-view/>
+
   </div>
 </template>
 
