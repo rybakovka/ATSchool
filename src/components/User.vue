@@ -37,7 +37,7 @@
         </v-card-media>
         <v-card-title primary-title>
           <div>
-            <div class="headline">{{ userInfo.Firstname }}</div>
+            <div class="headline">{{ userInfo.name }}</div>
             <div class="headline">{{ userInfo.Lastname }}</div>
             <div class="headline">{{ userInfo.Middlename }}</div>
             <span class="grey--text">{{userInfo.State}}</span>
@@ -107,7 +107,11 @@
 
   import { store } from '../main.js'
 
+
   export default {
+
+
+
     data: () => ({
       userInfo: {
         Firstname: '!',
@@ -124,12 +128,12 @@
       source: String
     },
     created: function () {
-        //this.userInfo = store.getters.getUserInfo;
-        console.log("User1");
-        console.log(store.getters.getUserInfo);
-        console.log("User2");
+        store.dispatch('infoByCookie');
         console.log(this.userInfo);
-        //store.dispatch('getCource');
+        //store.dispatch('getCources');
+        //this.$data.userInfo.Firstname = store.getters.getUserInfo.name;
+        console.log('console.log(store.getters.getUserInfo);');
+        console.log(store.getters.getUserInfo);
         
     }
   }

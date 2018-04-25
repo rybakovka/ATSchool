@@ -74,9 +74,7 @@
 
     methods: {
       submit () {
-        this.$v.$touch()
-        console.log(this.$v);
-        console.log(this.$data.password);
+        this.$v.$touch();
         store.commit('loginAndPassword', this.$data  );
         store.dispatch('logIn');
       },
