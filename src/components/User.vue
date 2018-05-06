@@ -128,13 +128,16 @@
       source: String
     },
     created: function () {
-        store.dispatch('infoByCookie');
+        //store.dispatch('infoByCookie');
         console.log(this.userInfo);
         //store.dispatch('getCources');
         //this.$data.userInfo.Firstname = store.getters.getUserInfo.name;
         console.log('console.log(store.getters.getUserInfo);');
         console.log(store.getters.getUserInfo);
-        
+        store.dispatch('infoByCookie').then(() => {
+          console.log('данные загружены');
+        })
+
     }
   }
 </script>

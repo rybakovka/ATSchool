@@ -73,19 +73,20 @@ export const store = new Vuex.Store({
         },
 
         infoByCookie({ commit }) {
+            return new Promise((resolve, reject) => {
+                var session = Vue.cookie.get('session');
+                if (session) {
+                    Axios.get(`http://localhost:8080/user/session/${session}`).
+                    then(Response => {
+                        commit('setUserInfo', Response.data);
+                        //router.push({ name: 'User', params: { id: 123 } });
 
-            var session = Vue.cookie.get('session');
-            if (session) {
-                Axios.get(`http://localhost:8080/user/session/${session}`).
-                then(Response => {
-                    commit('setUserInfo', Response.data);
-                    router.push({ name: 'User', params: { id: 123 } });
-                });
-            } else {
-                console.log('нет куки');
-            }
+                    });
+                } else {
+                    console.log('нет куки');
+                }
             //this.$router.push({ name: 'User', params: { id: 123 } });
-
+            });
         },
 
         logIn({ dispatch, commit }) {
