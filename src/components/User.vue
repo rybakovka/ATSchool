@@ -130,7 +130,9 @@
     created: function () {
         store.dispatch('infoByCookie').then(() => {
           console.log('успех');
+          console.log(store.state.userInfo.last_name);
         });
+        console.log
         //console.log(this.userInfo);
         //store.dispatch('getCources');
         //this.$data.userInfo.Firstname = store.getters.getUserInfo.name; 

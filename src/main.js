@@ -79,7 +79,6 @@ export const store = new Vuex.Store({
                     Axios.get(`http://localhost:8080/user/session/${session}`).
                     then(Response => {
                         commit('setUserInfo', Response.data);
-                        console.log(Response.data); 
                         //router.push({ name: 'User', params: { id: 123 } });
                         resolve();
                     });
