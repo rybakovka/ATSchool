@@ -37,7 +37,7 @@
         </v-card-media>
         <v-card-title primary-title>
           <div>
-            <div class="headline">{{ userInfo.name }}</div>
+            <div class="headline">{{ userInfo.Firstname }}</div>
             <div class="headline">{{ userInfo.Lastname }}</div>
             <div class="headline">{{ userInfo.Middlename }}</div>
             <span class="grey--text">{{userInfo.State}}</span>
@@ -61,7 +61,9 @@
 
       <v-expansion-panel expand>
         <v-expansion-panel-content>
-          <div slot="header">Item</div>
+
+
+          <div slot="header">{{ courceInfo.Name }} <br /> Начало {{ courceInfo.StartDate }} Конец {{ courceInfo.EndDate }} </div>
           <v-card>
             <v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
           </v-card>
@@ -119,6 +121,9 @@
         Middlename: '#',
         State: 'Student'
       },
+      courceInfo: {
+        Name: 'Name'
+      },
       drawer: true,
       drawerRight: true,
       right: null,
@@ -129,79 +134,21 @@
     },
     created: function () {
         store.dispatch('infoByCookie').then(() => {
-          console.log('успех');
-          console.log(store.state.userInfo.last_name);
+          console.log(store.state.userInfo);
+          this.$data.userInfo.Firstname = store.state.userInfo.name;
+          this.$data.userInfo.Lastname = store.state.userInfo.last_name;
+          this.$data.userInfo.Middlename = store.state.userInfo.middle_name;
+
+          this.$data.userInfo.State = (store.state.userInfo.co_worker) ? 'Coworker' :
+                                                                (true) ? 'Student' : '';
         });
-        console.log
-        //console.log(this.userInfo);
-        //store.dispatch('getCources');
-        //this.$data.userInfo.Firstname = store.getters.getUserInfo.name; 
-        //console.log(store.getters.getUserInfo);
-        /*store.dispatch('infoByCookie').then(() => {
-          console.log('данные загружены');
-        })*/
 
+        store.dispatch('getCources').then(() => {
+          this.$data.courceInfo.Name = store.state.cources.Name;
+          this.$data.courceInfo.StartDate = store.state.cources.StartDate;
+          this.$data.courceInfo.EndDate = store.state.cources.EndDate;
+          //console.log(store.state.cources);
+        });
     }
   }
 </script>
-
-<!--
-
-
-<template>
-
-<div>
-    <button class="btn btn-primary" v-on:click="showCource">Получить курс</button>
-</div>
-
-</template>
-
-
-<script>
-
-import { store } from '../main.js'
-
-export default {
-  name: 'User',
-  data () {
-    return {}
-  },
-  methods: {
-    showCource: function() {
-      store.dispatch('getCource');
-    }
-  }
-}
-
-</script>
-
--->
-
-
-
-<!--
-<template>
-    <div>
-        <h2>
-            User {{$route.params.id }}
-            Перенести страницу пользователя
-        </h2>
-    </div>
-</template>
-
-<script>
-
-    import { store } from '../main.js'
-
-
-
-    export default {
-
-        name: 'User',
-        methods: {
-
-        }
-
-    }
-
-</script> -->

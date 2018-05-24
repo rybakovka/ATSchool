@@ -27,7 +27,9 @@ export const store = new Vuex.Store({
         userInfo: {
             name: "Константин"
         },
-        cources: {}
+        cources: {
+
+        }
     },
     getters: {
         gerUserInfo: state => {
@@ -85,14 +87,12 @@ export const store = new Vuex.Store({
                 } else {
                     console.log('нет куки');
                 }
-            //this.$router.push({ name: 'User', params: { id: 123 } });
             });
         },
 
 
         logIn({ dispatch, commit }) {
-            return dispatch('authByPassword').then(() => {
-            });
+            return dispatch('authByPassword').then(() => {});
         },
 
         logOut({ commit }) {
@@ -109,16 +109,19 @@ export const store = new Vuex.Store({
             commit('clear');
         },
 
-        getCources({}) {
-            var session = Vue.cookie.get('session');
-            if (session) {
-                Axios.get(`http://localhost:8080/courses/session/${session}`).
-                then(Response => {
-                    commit('setCources', Response.data);
-                });
-            } else {
-                console.log('нет куки');
-            }
+        getCources({ commit }) {
+            return new Promise((resolve, reject) => {
+                var session = Vue.cookie.get('session');
+                if (session) {
+                    Axios.get(`http://localhost:8080/courses/session/${session}`).
+                    then(Response => {
+                        commit('setCources', Response.data);
+                        resolve();
+                    });
+                } else {
+                    console.log('нет куки');
+                }
+            });
         }
     }
 });
