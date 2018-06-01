@@ -65,15 +65,21 @@
 
           <div slot="header">{{ courceInfo.Name }} <br /> Начало {{ courceInfo.StartDate }} Конец {{ courceInfo.EndDate }} </div>
           <v-card>
-            <v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
+            <v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+              quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
           </v-card>
 
           <v-card>
-            <v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
+            <v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+              quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
           </v-card>
 
           <v-card>
-            <v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
+            <v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+              quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
           </v-card>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -134,11 +140,9 @@
     },
     created: function () {
         store.dispatch('infoByCookie').then(() => {
-          console.log(store.state.userInfo);
           this.$data.userInfo.Firstname = store.state.userInfo.name;
           this.$data.userInfo.Lastname = store.state.userInfo.last_name;
           this.$data.userInfo.Middlename = store.state.userInfo.middle_name;
-
           this.$data.userInfo.State = (store.state.userInfo.co_worker) ? 'Coworker' :
                                                                 (true) ? 'Student' : '';
         });
@@ -147,7 +151,7 @@
           this.$data.courceInfo.Name = store.state.cources.Name;
           this.$data.courceInfo.StartDate = store.state.cources.StartDate;
           this.$data.courceInfo.EndDate = store.state.cources.EndDate;
-          //console.log(store.state.cources);
+          console.log(store.state.cources); 
         });
     }
   }

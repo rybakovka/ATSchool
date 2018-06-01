@@ -34,8 +34,6 @@ export const store = new Vuex.Store({
     getters: {
         gerUserInfo: state => {
             return state.userInfo;
-            console.log('getter');
-            console.log(state.userInfo);
         }
     },
     //Чтобы инициировать обработку мутации, необходимо вызвать store.commit, уточнив
@@ -57,7 +55,6 @@ export const store = new Vuex.Store({
     actions: {
         authByPassword({ commit }) {
             return new Promise((resolve, reject) => {
-                console.log(this.state.lp.email + this.state.lp.password);
                 Axios.post('http://localhost:8080/auth', { login: this.state.lp.email, passMD5: this.state.lp.password })
                     .then(Response => {
                         console.log(Response.data);
